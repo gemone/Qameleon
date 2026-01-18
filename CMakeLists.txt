@@ -12,6 +12,7 @@ project(
 
 include(cmake/project-is-top-level.cmake)
 include(cmake/variables.cmake)
+include(cmake/local-qt6.cmake)
 
 # ---- Declare library ----
 
@@ -56,6 +57,12 @@ target_include_directories(
 )
 
 target_compile_features(Qameleon_Qameleon PUBLIC cxx_std_20)
+
+# ---- Dependencies ----
+# Find Qt6 using custom function from local-qt6.cmake
+# Qt6 will always be linked as shared libraries regardless of BUILD_SHARED_LIBS
+qameleon_find_qt6(COMPONENTS Core Gui)
+target_link_libraries(Qameleon_Qameleon PUBLIC ${QT_TARGETS})
 
 find_package(fmt REQUIRED)
 target_link_libraries(Qameleon_Qameleon PRIVATE fmt::fmt)
